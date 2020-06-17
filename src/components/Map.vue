@@ -4,8 +4,8 @@
      <div v-if="showPrompt">
        <PromptPlaceDeletion v-on:cancel="setHideDialogue" v-on:continue="deletePlace" v-bind:question="msg"></PromptPlaceDeletion>
      </div>
-    <vl-map  @click="coordinate = $event.coordinate" :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
-             data-projection="EPSG:4326" style="height: 600px">
+    <vl-map  @click="promptAddForm(); coordinate = $event.coordinate" :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+             data-projection="EPSG:4326" style="height: 750px">
       <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
         
       <vl-geoloc @update:position="geolocPosition = $event">
@@ -23,6 +23,11 @@
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile >
 
+      <vl-layer-vector id="draw-pane" v-if="isdrawing">
+        <vl-source-vector ident="draw-target" :features.sync="drawnFeatures"></vl-source-vector>
+      </vl-layer-vector>
+
+      <vl-interaction-draw v-if="drawType && isdrawing" source="draw-target" :type="drawType"></vl-interaction-draw>
        <vl-interaction-select :features.sync="selectedFeatures" v-if="drawType == null">
         
         <vl-layer-vector>
@@ -67,7 +72,8 @@
       ID: {{showByKey}}<br>
       Features: {{selectedFeatures}} <br>
       Drawn : {{drawnFeatures}} <br>
-      confirmD: {{confirmDelete}}
+      confirmD: {{confirmDelete}} <br>
+      isdrawing : {{isdrawing}}
     </div>
   </div>
 </template>
@@ -78,13 +84,15 @@
    import PlaceCard from './Cards/PlaceCard'
    import axios from 'axios'
 
-  export default {
+export default {
 components: {
 PromptPlaceDeletion,
 PlaceCard
 },
 props: {
   places: Array,
+  tabid: String,
+  isdrawing: Boolean
 },
     data () {
       return { 
@@ -95,7 +103,7 @@ props: {
         coordinate: [],
         showByKey: null,
         selectedFeatures: [],
-        drawType: null,
+        drawType: "Point",
         drawnFeatures: [],
         confirmDelete: false,
         showPrompt: false,
@@ -139,11 +147,34 @@ props: {
 
 
       
+    },
+
+    startDrawing(){
+      console.log("start");
+      this.isDrawing = true;
+      this.drawnFeatures = null;
+      this.coordinate = [];
+      this.$emit("drawstarted");
+    },
+
+    endDrawing(){
+      console.log("End");
+       this.isDrawing = false;
+       this.drawnFeatures = null;
+       this.coordinate = [];
+       this.$emit("drawended");
+    },
+
+    promptAddForm(){
+       this.$emit("addplace");
     }
   },
   mounted(){
 
-  }
+  },
+ 
+ 
+  
   }
 </script>
 

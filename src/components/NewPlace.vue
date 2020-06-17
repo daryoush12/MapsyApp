@@ -14,7 +14,8 @@
     name: 'DialogCustom',
      Data(){
          return {
-            showDialog: true
+            showDialog: true,
+          
         }
     }
   }
