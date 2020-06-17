@@ -3,7 +3,6 @@
   <div>
      <div v-if="showPrompt">
        <PromptPlaceDeletion v-on:cancel="setHideDialogue" v-on:continue="deletePlace" v-bind:question="msg"></PromptPlaceDeletion>
-
      </div>
     <vl-map  @click="coordinate = $event.coordinate" :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
              data-projection="EPSG:4326" style="height: 600px">
@@ -40,39 +39,18 @@
             </vl-style-circle>
           </vl-style-box>
 
-          <vl-overlay  class="feature-popup" id="overlay" v-for="feature in selectedFeatures" :key="feature.id"
-                      :position="pointOnSurface(feature.geometry)" :auto-pan="true" :auto-pan-animation="{ duration: 50 }">
-          <template slot-scope="scope">
-        <md-card>
-          <md-card-header>
-
-        <md-card-header-text>
-          <div class="md-title">{{feature.properties.title}}</div>
-           <div class="md-subhead">{{scope.position}}</div>
-        </md-card-header-text>
-
-           <md-card-actions>
-          <md-button @click="selectedFeatures=[]" class="md-icon-button">
-            <md-icon >close</md-icon>
-          </md-button>
-      </md-card-actions>
-
-          </md-card-header>
-          <md-card-content>
-          {{feature.properties.description}}
-        </md-card-content>
-
-         <md-card-actions>
-         <md-button class="md-icon-button" @click="setShowDialogue">
-            <md-icon>delete</md-icon>
-          </md-button>
-      </md-card-actions>
-    </md-card>
-
-
-               
-              
-
+          <vl-overlay  class="feature-popup" 
+          id="overlay" 
+          v-for="feature 
+          in selectedFeatures" 
+          :key="feature.id"
+          :position="pointOnSurface(feature.geometry)" 
+          :auto-pan="true" 
+          :auto-pan-animation="{ duration: 50 }">
+          <template>
+            <PlaceCard v-on:close="selectedFeatures=[]" 
+            v-on:delete="setShowDialogue" 
+            :place="feature.properties"/>
            </template>
           </vl-overlay>
 
@@ -96,12 +74,14 @@
 
 <script>
    import {findPointOnSurface} from 'vuelayers/lib/ol-ext'
-   import PromptPlaceDeletion from './PromptPlaceDeletion'
+   import PromptPlaceDeletion from './Dialogues/PromptPlaceDeletion'
+   import PlaceCard from './Cards/PlaceCard'
    import axios from 'axios'
 
   export default {
 components: {
-PromptPlaceDeletion
+PromptPlaceDeletion,
+PlaceCard
 },
 props: {
   places: Array,
@@ -138,7 +118,7 @@ props: {
     },
 
     deleteOperationDone() {
-      this.$emit('placedeleted')
+      this.$emit('placedeleted', {message:"Place was deleted successfully"})
     },
     deletePlace(){
       var feature = this.selectedFeatures[0];
@@ -180,11 +160,22 @@ props: {
 
 .feature-popup 
       position: absolute
-      left: +0px
-      bottom: 12px
+      left: +40px
+      bottom: 110px
       width: 20em
       max-width: none
 
-
+.speech-triangle
+	position: absolute
+	left: 0
+	top: 50%
+	width: 0
+	height: 0
+	border: 20px solid transparent
+	border-right-color: white
+	border-left: 0
+	margin-top: -20px
+	margin-left: -20px
+  content: ''
   
 </style>

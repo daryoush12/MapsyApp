@@ -1,5 +1,7 @@
 <template>
  <div class="page-container md-layout-row">
+              <AlertDialog v-if="showAlert" v-on:hide="alertHide" message="Place was deleted"/>
+
     <md-app>
       <md-app-toolbar class="md-primary">
         <span class="md-title">Mapsy App</span>
@@ -21,7 +23,7 @@
 
         <md-list>
           <md-list-item>
-            <p>test</p>
+            <p>Alert: {{showAlert}}</p>
           </md-list-item>
         </md-list>
       </md-app-drawer>
@@ -30,11 +32,14 @@
      
 
         <br/>
-        <div class = "load" v-if="loading">Loading...</div>
+        <div v-if="loading"><md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner></div>
 
         <div class ="test" v-else>
-          <Map v-bind:places = "places" v-on:placedeleted="loading = true"></Map>
+    
+          <Map v-bind:places = "places" v-on:placedeleted="alertShow"></Map>
         </div>
+
+       
         
       </md-app-content>
     </md-app>
@@ -45,27 +50,33 @@
 
 import axios from 'axios'
 import Map from './components/Map'
+import AlertDialog from './components/Dialogues/AlertDialog'
 
 export default {
   name: 'App',
   components: {
-    Map
+    Map,
+    AlertDialog
   },
     data(){
       return {
         places: [],
         errored: false,
-        loading: true
+        loading: true,
+        showAlert: false,
+
       }
     },
   created () { 
 
+console.log("test");
 
   },
 
 
   mounted() {
-   getAllPlaces();
+    this.getAllPlaces();
+    console.log(this.showAlert);
   },
 
   methods: {
@@ -81,6 +92,16 @@ export default {
         this.errored = true
       })
       .finally(() => this.loading = false)
+    },
+
+    alertShow(){
+
+      this.showAlert = true;
+    },
+
+    alertHide(){
+      this.showAlert = false;
+      this.getAllPlaces();
     }
   }
 
