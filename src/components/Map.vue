@@ -137,14 +137,18 @@ props: {
      this.showPrompt = false;
     },
 
+    deleteOperationDone() {
+      this.$emit('placedeleted')
+    },
     deletePlace(){
-      var feature = selectedFeatures[0];
+      var feature = this.selectedFeatures[0];
+  
+
+      console.log(feature);
           axios
-      .delete('http://localhost:8080/API/V1/places/delete', {
-      id: feature.properties.id,
-      })
-      .then(response => {
-        this.places = response.data,
+      .delete('http://localhost:8080/API/V1/places/delete?id='+feature.properties._id)
+      .then(() => {
+        this.deleteOperationDone();
       })
       .catch(error => {
         console.log(error)

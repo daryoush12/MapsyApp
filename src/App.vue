@@ -33,7 +33,7 @@
         <div class = "load" v-if="loading">Loading...</div>
 
         <div class ="test" v-else>
-          <Map v-bind:places = "places"></Map>
+          <Map v-bind:places = "places" v-on:placedeleted="loading = true"></Map>
         </div>
         
       </md-app-content>
@@ -58,8 +58,19 @@ export default {
         loading: true
       }
     },
-    created () {
-    axios
+  created () { 
+
+
+  },
+
+
+  mounted() {
+   getAllPlaces();
+  },
+
+  methods: {
+    getAllPlaces() {
+           axios
       .get('http://localhost:8080/API/V1/places/all')
       .then(response => {
         this.places = response.data,
@@ -70,6 +81,7 @@ export default {
         this.errored = true
       })
       .finally(() => this.loading = false)
+    }
   }
 
 }
