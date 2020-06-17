@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 3000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "node-sass": "^4.14.1",
+    "ol": "^6.3.1",
+    "sass-loader": "^8.0.2",
+    "vue": "^2.6.11",
+    "vue-material": "^1.0.0-beta-14",
+    "vuelayers": "^0.11.26"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
