@@ -1,5 +1,5 @@
 <template>
-        <md-card>
+        <md-card v-if="place != null">
           <md-card-header>
             <div class = "speech-triangle"></div>
         <md-card-header-text class = "head-text">

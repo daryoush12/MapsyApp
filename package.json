@@ -16,6 +16,7 @@
     "vue": "^2.6.11",
     "vue-material": "^1.0.0-beta-14",
     "vuelayers": "^0.11.26",
+    "vuelidate": "^0.7.5",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

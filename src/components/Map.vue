@@ -4,7 +4,7 @@
      <div v-if="showPrompt">
        <PromptPlaceDeletion v-on:cancel="setHideDialogue" v-on:continue="deletePlace" v-bind:question="msg"></PromptPlaceDeletion>
      </div>
-    <vl-map  @click="promptAddForm(); coordinate = $event.coordinate" :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+    <vl-map  @click="promptAddForm($event.coordinate); coordinate = $event.coordinate" :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
              data-projection="EPSG:4326" style="height: 750px">
       <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
         
@@ -23,25 +23,24 @@
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile >
 
+   
+
       <vl-layer-vector id="draw-pane" v-if="isdrawing">
         <vl-source-vector ident="draw-target" :features.sync="drawnFeatures"></vl-source-vector>
       </vl-layer-vector>
 
       <vl-interaction-draw v-if="drawType && isdrawing" source="draw-target" :type="drawType"></vl-interaction-draw>
-       <vl-interaction-select :features.sync="selectedFeatures" v-if="drawType == null">
+       <vl-interaction-select :features.sync="selectedFeatures">
         
-        <vl-layer-vector>
-        <vl-feature v-for="item in places" :key="item._id" :properties="item">
+        <vl-layer-vector >
+        <vl-feature v-for="place in places" :key="place._id" :properties="place">
 
-          <vl-geom-point :coordinates="[item.coordinates.longitude, 
-            item.coordinates.latitude]">
+          <vl-geom-point :coordinates="[place.coordinates.longitude, place.coordinates.latitude]">
           </vl-geom-point>
 
           <vl-style-box>
-            <vl-style-circle :radius="20">
-              <vl-style-fill color="white"></vl-style-fill>
-              <vl-style-stroke color="red"></vl-style-stroke>
-            </vl-style-circle>
+       
+            <vl-style-icon src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/256/map-marker-icon.png" :scale="0.2" :anchor="[0.5, 1]"> </vl-style-icon>
           </vl-style-box>
 
           <vl-overlay  class="feature-popup" 
@@ -54,7 +53,7 @@
           :auto-pan-animation="{ duration: 50 }">
           <template>
             <PlaceCard v-on:close="selectedFeatures=[]" 
-            v-on:delete="setShowDialogue" 
+            v-on:delete="promptPlaceDeletion(place)" 
             :place="feature.properties"/>
            </template>
           </vl-overlay>
@@ -63,18 +62,6 @@
       </vl-layer-vector>
        </vl-interaction-select>
     </vl-map>
-    <div style="padding: 20px">
-      Zoom: {{ zoom }}<br>
-      Center: {{ center }}<br>
-      Rotation: {{ rotation }}<br>
-      My geolocation: {{ geolocPosition }}<br>
-      ClickCoordinates:{{coordinate}} <br>
-      ID: {{showByKey}}<br>
-      Features: {{selectedFeatures}} <br>
-      Drawn : {{drawnFeatures}} <br>
-      confirmD: {{confirmDelete}} <br>
-      isdrawing : {{isdrawing}}
-    </div>
   </div>
 </template>
 
@@ -82,17 +69,34 @@
    import {findPointOnSurface} from 'vuelayers/lib/ol-ext'
    import PromptPlaceDeletion from './Dialogues/PromptPlaceDeletion'
    import PlaceCard from './Cards/PlaceCard'
-   import axios from 'axios'
+   import {mapState} from 'vuex'
+   import { EventBus } from '../event-bus'
+
 
 export default {
+
+mounted(){
+  EventBus.$on("addplacedialogueclosed", () => {
+    this.drawnFeatures = [];
+    this.selectedFeatures = [];
+    console.log(this.drawnFeatures);
+  });
+
+  EventBus.$on("zoomAtPlace", place => {
+     this.zoomToPlace(place);
+  });
+
+  EventBus.$on("mapreset", () => {
+    this.resetZoomAndCenter();
+  });
+    
+},
 components: {
 PromptPlaceDeletion,
 PlaceCard
 },
 props: {
-  places: Array,
   tabid: String,
-  isdrawing: Boolean
 },
     data () {
       return { 
@@ -118,60 +122,46 @@ props: {
 
   methods: {
     pointOnSurface: findPointOnSurface,
-    setShowDialogue(){
-      this.showPrompt = true;
-    },
-    setHideDialogue(){
-     this.showPrompt = false;
+
+  zoomToPlace(place){
+      var coords = [place.coordinates.longitude, 
+      place.coordinates.latitude];
+
+      this.center = coords;
+      this.zoom = 6;
+
     },
 
     deleteOperationDone() {
       this.$emit('placedeleted', {message:"Place was deleted successfully"})
     },
-    deletePlace(){
-      var feature = this.selectedFeatures[0];
-  
 
-      console.log(feature);
-          axios
-      .delete('http://localhost:8080/API/V1/places/delete?id='+feature.properties._id)
-      .then(() => {
-        this.deleteOperationDone();
-      })
-      .catch(error => {
-        console.log(error)
-        this.errored = true
-      })
-      .finally(() => this.loading = false)
-
-
-
-      
+    promptPlaceDeletion(place){
+      EventBus.$emit("deleteplace", place);
     },
-
-    startDrawing(){
-      console.log("start");
-      this.isDrawing = true;
-      this.drawnFeatures = null;
-      this.coordinate = [];
-      this.$emit("drawstarted");
+    promptAddForm(coord){
+    if(this.isdrawing)
+       EventBus.$emit("addplace", coord);
     },
-
-    endDrawing(){
-      console.log("End");
-       this.isDrawing = false;
-       this.drawnFeatures = null;
-       this.coordinate = [];
-       this.$emit("drawended");
-    },
-
-    promptAddForm(){
-       this.$emit("addplace");
-    }
+  resetZoomAndCenter(){
+    this.center = [0,0];
+    this.zoom = 2;
+  }
   },
-  mounted(){
 
-  },
+
+ compute: {
+   coordinateArray(coordinates){
+     return [coordinates.longitude, coordinates.latitude];
+   },
+
+ },
+
+   computed: mapState({
+     places: state => state.places.all,
+     isdrawing: state => state.map.isDrawing
+ }),
+
  
  
   

@@ -8,7 +8,10 @@ import 'vuelayers/lib/style.css'
 import { Map, TileLayer, OsmSource, Geoloc } from 'vuelayers'
 import 'vuelayers/lib/style.css'
 import { CircleStyle } from 'vuelayers'
-import Vuex from 'vuex'
+import { IconStyle } from 'vuelayers'
+
+import store from './store/'
+
 
 Vue.use(VueLayers)
 Vue.use(Map)
@@ -16,16 +19,9 @@ Vue.use(TileLayer)
 Vue.use(OsmSource)
 Vue.use(Geoloc)
 Vue.use(CircleStyle)
-
+Vue.use(IconStyle);
 Vue.config.productionTip = false
 Vue.use(VueMaterial);
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
-  state: {
-      count: "hello world"
-  }
-});
 
 
 new Vue({
