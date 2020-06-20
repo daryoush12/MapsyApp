@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-
+const api_url = "https://mapsyapi.herokuapp.com";
 
 export default{
     getPlaces(commitbase){
        
         axios
-        .get('http://localhost:8080/API/V1/places/all')
+        .get(api_url+'/API/V1/places/all')
         .then(response => {
             commitbase(response.data)
         })
@@ -17,7 +17,7 @@ export default{
 
     addPlace(commitbase, place){
         axios
-        .post('http://localhost:8080/API/V1/places/add', {
+        .post(api_url+'/API/V1/places/add', {
             title: place.title,
             description: place.description,
             coordinates: {
@@ -34,7 +34,7 @@ export default{
     deletePlace(commitbase, id){
     
             axios
-        .delete('http://localhost:8080/API/V1/places/delete?id='+id)
+        .delete(api_url+'/API/V1/places/delete?id='+id)
         .then(() => {
           
         })
@@ -45,7 +45,7 @@ export default{
 
     searchPlace(commitbase, searchvalue){
       axios
-      .get('http://localhost:8080/API/V1/places/all/search?value='+searchvalue)
+      .get(api_url+'/API/V1/places/all/search?value='+searchvalue)
       .then(response => {
           commitbase(response.data)
       })
