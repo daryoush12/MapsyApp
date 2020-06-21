@@ -5,6 +5,8 @@
 
         <NewPlaceDialogue  v-bind:showDialog="cleanCoords.length != 0" v-on:cancel="cleanCoords" />
         <PromptPlaceDeletion />
+        <AlertDialog v-if="deleteStatus" message="Place deleted"/>
+
 </div>
 </template>
 
@@ -13,14 +15,17 @@ import Map from '../components/Map'
 import { mapState} from 'vuex'
 import NewPlaceDialogue from '../components/Dialogues/NewPlaceDialogue'
 import PromptPlaceDeletion from '../components/Dialogues/PromptPlaceDeletion'
+import AlertDialog from '../components/Dialogues/AlertDialog'
 
 
 export default {
- components: {
+
+components: {
      Map,
      NewPlaceDialogue,
-     PromptPlaceDeletion
- },
+     PromptPlaceDeletion,
+     AlertDialog
+},
  data(){
    return {
         shouldDraw: false,
@@ -29,10 +34,11 @@ export default {
       }
  },
  computed: mapState({
-     places: state => state.places.all
+     places: state => state.places.all,
+     deleteStatus: state => state.places.deleteStatus
  }),
 
- compute: {
+compute: {
 isCoordsEmpty(){
     if(this.cleanCoords.length == 0){
         return true;

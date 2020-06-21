@@ -1,6 +1,6 @@
 <template>
         <md-dialog-alert
-      :md-active.sync="showAl"
+      :md-active.sync="show"
       :md-content=message
       md-confirm-text="OK" 
       v-on:md-confirm="hideAlert"/>
@@ -12,13 +12,13 @@ export default {
     },
     data(){
     return {
-        showAl: true
+        show: true
         }
     },
 
     methods: {
         hideAlert(){
-            this.$emit('hide')
+            this.show = false;
         }
     }
 }

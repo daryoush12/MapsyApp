@@ -137,7 +137,8 @@ props: {
     },
 
     promptPlaceDeletion(place){
-      EventBus.$emit("deleteplace", place);
+      this.selectedFeatures = [];
+      EventBus.$emit("placedelete", place);
     },
     promptAddForm(coord){
     if(this.isdrawing)

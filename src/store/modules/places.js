@@ -23,7 +23,7 @@ const actions =  {
  },
 
  deletePlace({commit}, place) {
-   places.deletePlace(status => {commit('didAddSucceed', status)}, place);
+   places.deletePlace(status => {commit('didDeleteSucceed', status)}, place);
  }
 
 }
@@ -37,21 +37,22 @@ const mutations =  {
    console.log(status);
    switch(status){
       case 200:
-         state.addStatus = true
+         state.deleteStatus = true
          break;
       default:
-         state.addStatus = false;
+         state.deleteStatus = false;
    }
   
 },
 
 didDeleteSucceed(state, status){
+   console.log(status);
    switch(status){
       case 200:
-         state.deleteStatus = true
+         state.addStatus = true
          break;
       default:
-         state.deleteStatus = false;
+         state.addStatus = false;
    }
 }
 }

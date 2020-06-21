@@ -13,6 +13,8 @@
 
 <script>
 import {EventBus} from '../../event-bus';
+import {mapActions} from 'vuex'
+
 export default {
     data() {
         return {
@@ -21,26 +23,28 @@ export default {
             msg: null
         }
     },
-    methods: {
+    methods: { 
+    ...mapActions('places', [
+        'deletePlace'
+    ]),
         onConfirm(){
-            this.$emit('continue')
+            this.deletePlace(this.place);
+            this.active = false;
         },
 
         onCancel(){
-            this.active = false;
             this.$emit('cancel')
+            this.active = false;
         }
     },
 
 mounted(){
-    EventBus.$on("deleteplace", place => {
-
-    console.log(place);
+    EventBus.$on("placedelete", place => {
 
     this.place = place;
     this.active = true;
     this.msg = "Do you want to delete "+place.title+" ?";
   });
-    }
+}
 }
 </script>

@@ -32,7 +32,7 @@
         </md-card-content>
 
          <md-card-actions>
-         <md-button class="md-icon-button" @click="invokeClose">
+         <md-button class="md-icon-button" @click="invokeDelete">
             <md-icon>delete</md-icon>
           </md-button>
       </md-card-actions>
@@ -80,7 +80,7 @@ methods: {
     },
 
     invokeDelete(){
-        this.$emit("delete")
+        this.$emit("delete");
     },
 
        dateHour(timestamp){
