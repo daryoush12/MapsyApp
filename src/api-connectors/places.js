@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const api_url = "https://mapsyapi.herokuapp.com";
+//const api_url = "https://mapsyapi.herokuapp.com";
+const api_url = "http://localhost:8080";
 
 export default{
     getPlaces(commitbase){

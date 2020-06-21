@@ -182,7 +182,7 @@ props: {
 .feature-popup 
       position: absolute
       left: +40px
-      bottom: 110px
+      bottom: 170px
       width: 20em
       max-width: none
 

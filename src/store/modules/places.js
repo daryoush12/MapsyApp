@@ -1,4 +1,4 @@
-import api from '../../api/placeapi'
+import places from '../../api-connectors/places'
 
 const state = () => ({
         all: [],
@@ -10,20 +10,20 @@ const getters = {};
 
 const actions =  {
  getAllPlaces({commit}){
-    api.getPlaces(places => {commit('setPlaces', places)});
+    places.getPlaces(places => {commit('setPlaces', places)});
  },
 
  searchForPlaces({commit}, searchvalue){
     console.log(searchvalue);
-   api.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
+   places.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
 },
  addNewPlace({commit}, place){
     console.log(place);
-   api.addPlace(status => {commit('didAddSucceed', status)}, place);
+   places.addPlace(status => {commit('didAddSucceed', status)}, place);
  },
 
  deletePlace({commit}, place) {
-   api.deletePlace(status => {commit('didAddSucceed', status)}, place);
+   places.deletePlace(status => {commit('didAddSucceed', status)}, place);
  }
 
 }

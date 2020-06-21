@@ -3,25 +3,27 @@ import App from './App.vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
+
+/*
+
 import VueLayers from 'vuelayers'
 import 'vuelayers/lib/style.css'
 import { Map, TileLayer, OsmSource, Geoloc } from 'vuelayers'
 import 'vuelayers/lib/style.css'
 import { CircleStyle } from 'vuelayers'
 import { IconStyle } from 'vuelayers'
+*/
 
 import store from './store/'
+import VueOpenLayers from './plugins/VueOpenLayer'
 
 
-Vue.use(VueLayers)
-Vue.use(Map)
-Vue.use(TileLayer)
-Vue.use(OsmSource)
-Vue.use(Geoloc)
-Vue.use(CircleStyle)
-Vue.use(IconStyle);
+
 Vue.config.productionTip = false
 Vue.use(VueMaterial);
+Vue.use(VueOpenLayers);
+Vue.use(VueFilterDateFormat);
 
 
 new Vue({
