@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const api_url = "https://mapsyapi.herokuapp.com";
-//const api_url = "http://localhost:8080";
+//const api_url = "https://mapsyapi.herokuapp.com";
+const api_url = "http://localhost:8080";
 
 export default{
     getPlaces(commitbase){
@@ -17,6 +17,7 @@ export default{
       },
 
     addPlace(commitbase, place){
+        console.log(place);
         axios
         .post(api_url+'/API/V1/places/add', {
             title: place.title,
@@ -24,7 +25,12 @@ export default{
             coordinates: {
                 longitude: place.coordinates.longitude,
                 latitude: place.coordinates.latitude
+            },
+            open_hours:{
+                from: place.open_hours.from.H,
+                to: place.open_hours.to.H
             }
+
           })
         .then(response => {commitbase(response.status)})
         .catch(error => {
@@ -49,11 +55,33 @@ export default{
       axios
       .get(api_url+'/API/V1/places/all/search?value='+searchvalue)
       .then(response => {
-          commitbase(response.data)
+          commitbase(response.data);
       })
       .catch(error => {
           console.log(error)
       });
+    },
+
+    searchPlacesByDescription(commitbase, searchvalue){
+        axios
+        .get(api_url+'/API/V1/places/description?desc='+searchvalue)
+        .then(response => {
+            commitbase(response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    },
+
+    searchPlacesByKeyword(commitbase, label){
+        axios
+        .get(api_url+'/API/V1/places/keywords/search?label='+label)
+        .then(response => {
+            commitbase(response.data);
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
 
   

@@ -53,7 +53,7 @@
           :auto-pan-animation="{ duration: 50 }">
           <template>
             <PlaceCard v-on:close="selectedFeatures=[]" 
-            v-on:delete="promptPlaceDeletion(place)" 
+            v-on:delete="promptPlaceDeletion(feature.properties)" 
             :place="feature.properties"/>
            </template>
           </vl-overlay>
@@ -89,6 +89,10 @@ mounted(){
   EventBus.$on("mapreset", () => {
     this.resetZoomAndCenter();
   });
+
+  EventBus.$on("stopDrawing", () => {
+    this.drawnFeatures = [];
+  });
     
 },
 components: {
@@ -114,10 +118,6 @@ props: {
         msg: "Are you sure you want to delete this place?"
 
       }
-    },
-
-    checkData(properties){
-      console.log(properties);
     },
 
   methods: {
@@ -162,11 +162,7 @@ props: {
      places: state => state.places.all,
      isdrawing: state => state.map.isDrawing
  }),
-
- 
- 
-  
-  }
+}
 </script>
 
 

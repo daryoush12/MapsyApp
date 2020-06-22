@@ -3,7 +3,7 @@
    <md-dialog :md-active.sync="showDialog" @md-cancel="onClose" v-bind:md-click-outside-to-close="false" v-bind:md-close-on-esc="false">
       <md-dialog-title>
       Add Place
-      <md-button class="md-icon-button" @click="onClose">
+      <md-button class="md-icon-button close-button" @click="onClose">
        <md-icon>close</md-icon>
       </md-button>
       </md-dialog-title>
@@ -24,7 +24,11 @@
                 <span class="md-error" v-else-if="!$v.form.description.minlength || !$v.form.description.maxlength">Invalid last name</span>
               </md-field>
         
-       
+        
+              Opening Hours: <br>
+              <vue-timepicker format="H" v-model="form.open_hours.from"></vue-timepicker> - 
+              <vue-timepicker v-model="form.open_hours.to" format="H"></vue-timepicker>
+     
             
        
          
@@ -32,12 +36,11 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-field>
-            <md-button type="submit" class="md-primary" :disabled="sending">Create place</md-button>
+            <md-button type="submit" class="md-primary submit-button" :disabled="sending">Create place</md-button>
         </md-field>
         </div>
     </form>
     </md-dialog>
-    <md-snackbar :md-active.sync="addStatus">Place was saved with success!</md-snackbar>
 </div>
 </template>
 
@@ -74,6 +77,10 @@ data: () =>({
             coordinates: {
                 longitude: null,
                 latitude: null
+            },
+            open_hours: {
+              from: null,
+              to: null
             }
         },
         placeSaved: false,
@@ -153,6 +160,13 @@ console.log(this.showDialog);
 
 <style lang = "sass">
 .form-content
-    padding: 10px
-    width: 100%
+  padding: 10px
+  width: 100%
+
+.submit-button
+  z-index: 4
+
+.close-button
+  margin-left: 125px !important
+
 </style>

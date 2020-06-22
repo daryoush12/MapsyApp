@@ -1,12 +1,14 @@
 <template>
 <div>
         <div v-if="!places"><md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner></div>
-        <Map v-else v-on:placedeleted="alertShow"  v-on:addplace="addplace"></Map>
+        <Map v-else v-on:addplace="addplace"></Map>
 
         <NewPlaceDialogue  v-bind:showDialog="cleanCoords.length != 0" v-on:cancel="cleanCoords" />
         <PromptPlaceDeletion />
-        <AlertDialog v-if="deleteStatus" message="Place deleted"/>
 
+        <md-snackbar :md-active.sync="deleteStatus">Place was deleted with success!</md-snackbar>
+        <md-snackbar :md-active.sync="addStatus">Place was added successfully</md-snackbar>
+        
 </div>
 </template>
 
@@ -15,7 +17,6 @@ import Map from '../components/Map'
 import { mapState} from 'vuex'
 import NewPlaceDialogue from '../components/Dialogues/NewPlaceDialogue'
 import PromptPlaceDeletion from '../components/Dialogues/PromptPlaceDeletion'
-import AlertDialog from '../components/Dialogues/AlertDialog'
 
 
 export default {
@@ -24,7 +25,6 @@ components: {
      Map,
      NewPlaceDialogue,
      PromptPlaceDeletion,
-     AlertDialog
 },
  data(){
    return {
@@ -35,7 +35,8 @@ components: {
  },
  computed: mapState({
      places: state => state.places.all,
-     deleteStatus: state => state.places.deleteStatus
+     deleteStatus: state => state.places.deleteStatus,
+     addStatus: state => state.places.addStatus
  }),
 
 compute: {
@@ -65,13 +66,6 @@ cleanCoords(){
 alertShow(){
       this.showAlert = true;
 },
-
-alertHide(){
-      this.showAlert = false;
-      this.getAllPlaces();
-    },
-
-
 }
 
 

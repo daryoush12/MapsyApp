@@ -1,24 +1,30 @@
 <template>
 <div>
-<div class = "search-field-holder">
-      
-        <md-autocomplete
+<div class = "md-layout search-field-holder">
+      <md-autocomplete
       v-model="searchvalue"
       :md-options="[]"
       v-on:md-changed="search"
       md-layout="box"
+      class = "search-field"
       md-dense>
-      <label><md-icon>search</md-icon> search..
-      </label>
+      <label><md-icon>search</md-icon> search.. </label>
     </md-autocomplete>
+    <md-select v-model="placefilter" name="filter-option" id="place-filter">
+            <md-option default value="title">Title</md-option>
+              <md-option value="description">Description</md-option>
+            <md-option value="keyword">Keyword</md-option>
+    </md-select>
+  
      
  
  
-{{searchvalue}}
+
 
 </div>
 <md-divider></md-divider>
 
+<div class="scrollablelist">
     <md-list v-for="place in places" :key="place._id">
       <md-list-item>
      
@@ -29,6 +35,7 @@
       </md-button>
       </md-list-item>
     </md-list>
+    </div>
 </div>
 </template>
 <script>
@@ -38,6 +45,7 @@ export default {
 data(){
   return {
     searchvalue: null,
+    placefilter: "title"
   }
 },
 
@@ -47,7 +55,7 @@ methods: {
   ]),
     search() {
       console.log('test'+this.searchvalue);
-      this.searchForPlaces(this.searchvalue);
+      this.searchForPlaces(this.searchvalue, this.placefilter);
     },
 
     invokeLookAtPlace(place){
@@ -65,7 +73,19 @@ computed: mapState({
 .search-field-holder
   margin: 10px
 
+.search-field
+  width: 250px !important
 .locateplace
   padding-top: 5px !important
+
+.scrollablelist
+    max-height: 700px
+    overflow: auto
+
+.md-select
+    height: 50px
+    margin-top: 4px
+
+
 
 </style>

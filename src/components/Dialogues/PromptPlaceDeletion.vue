@@ -40,7 +40,7 @@ export default {
 
 mounted(){
     EventBus.$on("placedelete", place => {
-
+console.log("deleting: "+place.title)
     this.place = place;
     this.active = true;
     this.msg = "Do you want to delete "+place.title+" ?";

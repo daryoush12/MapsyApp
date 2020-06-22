@@ -13,9 +13,20 @@ const actions =  {
     places.getPlaces(places => {commit('setPlaces', places)});
  },
 
- searchForPlaces({commit}, searchvalue){
+ searchForPlaces({commit}, searchvalue, filter){
+    switch(filter){
+       case "Title":
+         places.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
+         break;
+      case "Description":
+         break;
+      case "Keyword":
+         break;
+      default:
+         break;
+    }
     console.log(searchvalue);
-   places.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
+   
 },
  addNewPlace({commit}, place){
     console.log(place);
@@ -37,10 +48,10 @@ const mutations =  {
    console.log(status);
    switch(status){
       case 200:
-         state.deleteStatus = true
+         state.addStatus = true
          break;
       default:
-         state.deleteStatus = false;
+         state.addStatus = false;
    }
   
 },
@@ -49,10 +60,10 @@ didDeleteSucceed(state, status){
    console.log(status);
    switch(status){
       case 200:
-         state.addStatus = true
+         state.deleteStatus = true
          break;
       default:
-         state.addStatus = false;
+         state.deleteStatus = false;
    }
 }
 }
