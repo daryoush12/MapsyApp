@@ -21,11 +21,11 @@
 
     <md-list v-for="place in places" :key="place._id">
       <md-list-item>
-        <md-icon>place</md-icon>
+     
         <span class="md-list-item-text locateplace">{{place.title}}<br>{{place.coordinates.longitude}},
         {{place.coordinates.latitude}}</span>
           <md-button class="md-icon-button" @click="invokeLookAtPlace(place)">
-        <md-icon>my_location</md-icon>
+          <md-icon>place</md-icon>
       </md-button>
       </md-list-item>
     </md-list>
