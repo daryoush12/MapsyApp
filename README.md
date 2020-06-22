@@ -1,5 +1,7 @@
 # mapsy-app
 
+Application can be accessed at: https://quiet-dawn-43151.herokuapp.com/
+
 ## Project setup
 ```
 npm install
