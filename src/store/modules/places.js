@@ -13,11 +13,11 @@ const actions =  {
     places.getPlaces(places => {commit('setPlaces', places)});
  },
 
- searchForPlacesByTitle({commit}, searchvalue){
+ searchPlacesByTitle({commit}, searchvalue){
          places.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
 },
 
-searchForPlacesByKeyword({commit}, label){
+searchPlacesByKeyword({commit}, label){
    places.searchPlacesByKeyword(places => {commit('setPlaces', places)}, label);
 },
  addNewPlace({commit}, place){

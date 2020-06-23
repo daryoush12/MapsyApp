@@ -25,6 +25,9 @@
          <md-button class="md-icon-button" @click="invokeDelete">
             <md-icon>delete</md-icon>
           </md-button>
+          <md-button class="md-icon-button" @click="invokeDelete">
+            <md-icon>edit</md-icon>
+          </md-button>
       </md-card-actions>
     </md-card>
 </template>
@@ -33,7 +36,11 @@
 
 export default {
 
-
+data(){
+  return {
+      editModeOn: false
+  }
+},
 props: {
     place: Object
 },

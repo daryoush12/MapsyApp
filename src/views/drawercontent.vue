@@ -5,18 +5,23 @@
  <div class="md-layout md-gutter app-searchbar">
    <div class="md-layout-item md-size-70">
     <md-field>  
-     <label><md-icon>search</md-icon> search.. </label>  
-      <md-input :v-model="searchvalue">
-      </md-input>
+  
+        <md-autocomplete
+      v-model="searchvalue"
+      :md-options="[]"
+      md-layout="box"
+      class="search-bar"
+      @md-changed="search"
+      md-dense><label><md-icon>search</md-icon> search.. </label>  </md-autocomplete>
        </md-field>
   </div>
  <div class="md-layout-item md-size-30">    
      <md-field>  
-      <label for="movies">Filter</label>
-            <md-select :v-model="placefilter" name="filters" id="place-filter">
-            <md-option default value="title">Title</md-option>
-              <md-option value="description">Description</md-option>
-            <md-option value="keyword">Keyword</md-option>
+    <label for="movies">Filter</label>
+    <md-select :v-model="placefilter" name="filters" id="place-filter" :value="placefilter">
+            <md-option default value="Title">Title</md-option>
+            <md-option value="Description">Description</md-option>
+            <md-option value="Keyword">Keyword</md-option>
     </md-select>
     </md-field>
   </div>
@@ -25,8 +30,8 @@
 <md-divider></md-divider>
 
 <div class="scrollablelist">
-    <md-list v-for="place in places" :key="place._id">
-      <md-list-item>
+    <md-list v-if="places.length > 0">
+      <md-list-item  v-for="place in places" :key="place._id">
      
         <span class="md-list-item-text locateplace">{{place.title}}<br>{{place.coordinates.longitude}},
         {{place.coordinates.latitude}}</span>
@@ -35,6 +40,14 @@
       </md-button>
       </md-list-item>
     </md-list>
+    <div v-else>
+          <md-empty-state
+  
+    md-icon="search_off"
+    md-label="No results"
+    md-description="Try to use different search terms or inputs.">
+  </md-empty-state>
+    </div>
     </div>
 </div>
 </template>
@@ -45,27 +58,28 @@ export default {
 data(){
   return {
     searchvalue: null,
-    placefilter: "title"
+    placefilter: "Title"
   }
 },
 
 methods: {
     ...mapActions('places',[
-  'searchForPlacesByTitle',
-  'searchForPlacesByKeyword'
+  'searchPlacesByTitle',
+  'searchPlacesByKeyword'
   ]),
     search() {
+      console.log(this.placefilter + this.searchvalue);
       switch(this.placefilter){
         case "Title": {
-           this.searchForPlacesByTitle(this.searchvalue, this.placefilter);
+           this.searchPlacesByTitle(this.searchvalue, this.placefilter);
            break;
         }
         case "Keyword": {
-          this.searchForPlacesByKeyword(this.searchvalue, this.placefilter);
+          this.searchPlacesByKeyword(this.searchvalue, this.placefilter);
           break;
         }
         default:
-        break;
+        
       }
      
     },
@@ -95,13 +109,13 @@ computed: mapState({
     overflow: auto
 
 .md-select
-   
-    margin-top: 4px
+    margin-top: 20px
 
 .app-searchbar
   padding-left: 30px
   padding-right: 30px   
 
-
+.search-bar
+  backgroung-color: transparent
 
 </style>
