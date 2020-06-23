@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const api_url = "https://mapsyapi.herokuapp.com";
-//const api_url = "http://localhost:8080";
+//const api_url = "https://mapsyapi.herokuapp.com";
+const api_url = "http://localhost:8080";
 
 export default{
     getPlaces(commitbase){
@@ -75,7 +75,7 @@ export default{
 
     searchPlacesByKeyword(commitbase, label){
         axios
-        .get(api_url+'/API/V1/places/keywords/search?label='+label)
+        .get(api_url+'/API/V1/keywords/search?label='+label)
         .then(response => {
             commitbase(response.data);
         })

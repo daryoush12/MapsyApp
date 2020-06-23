@@ -1,26 +1,26 @@
 <template>
 <div>
-<div class = "md-layout search-field-holder">
-      <md-autocomplete
-      v-model="searchvalue"
-      :md-options="[]"
-      v-on:md-changed="search"
-      md-layout="box"
-      class = "search-field"
-      md-dense>
-      <label><md-icon>search</md-icon> search.. </label>
-    </md-autocomplete>
-    <md-select v-model="placefilter" name="filter-option" id="place-filter">
+ <div class="md-layout-item">
+ 
+ <div class="md-layout md-gutter app-searchbar">
+   <div class="md-layout-item md-size-70">
+    <md-field>  
+     <label><md-icon>search</md-icon> search.. </label>  
+      <md-input :v-model="searchvalue">
+      </md-input>
+       </md-field>
+  </div>
+ <div class="md-layout-item md-size-30">    
+     <md-field>  
+      <label for="movies">Filter</label>
+            <md-select :v-model="placefilter" name="filters" id="place-filter">
             <md-option default value="title">Title</md-option>
               <md-option value="description">Description</md-option>
             <md-option value="keyword">Keyword</md-option>
     </md-select>
-  
-     
- 
- 
-
-
+    </md-field>
+  </div>
+  </div>
 </div>
 <md-divider></md-divider>
 
@@ -51,11 +51,23 @@ data(){
 
 methods: {
     ...mapActions('places',[
-  'searchForPlaces'
+  'searchForPlacesByTitle',
+  'searchForPlacesByKeyword'
   ]),
     search() {
-      console.log('test'+this.searchvalue);
-      this.searchForPlaces(this.searchvalue, this.placefilter);
+      switch(this.placefilter){
+        case "Title": {
+           this.searchForPlacesByTitle(this.searchvalue, this.placefilter);
+           break;
+        }
+        case "Keyword": {
+          this.searchForPlacesByKeyword(this.searchvalue, this.placefilter);
+          break;
+        }
+        default:
+        break;
+      }
+     
     },
 
     invokeLookAtPlace(place){
@@ -83,8 +95,12 @@ computed: mapState({
     overflow: auto
 
 .md-select
-    height: 50px
+   
     margin-top: 4px
+
+.app-searchbar
+  padding-left: 30px
+  padding-right: 30px   
 
 
 

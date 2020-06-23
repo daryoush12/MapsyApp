@@ -13,20 +13,12 @@ const actions =  {
     places.getPlaces(places => {commit('setPlaces', places)});
  },
 
- searchForPlaces({commit}, searchvalue, filter){
-    switch(filter){
-       case "Title":
+ searchForPlacesByTitle({commit}, searchvalue){
          places.searchPlace(places => {commit('setPlaces', places)}, searchvalue);
-         break;
-      case "Description":
-         break;
-      case "Keyword":
-         break;
-      default:
-         break;
-    }
-    console.log(searchvalue);
-   
+},
+
+searchForPlacesByKeyword({commit}, label){
+   places.searchPlacesByKeyword(places => {commit('setPlaces', places)}, label);
 },
  addNewPlace({commit}, place){
     console.log(place);
@@ -41,8 +33,13 @@ const actions =  {
 
 const mutations =  {
  setPlaces(state, places){
-    console.log(places);
+    console.log("test");
     state.all = places;
+ },
+
+ setPlacesByKeyword(state,places){
+
+   state.all = places[0].associated_places;
  },
  didAddSucceed(state, status){
    console.log(status);
