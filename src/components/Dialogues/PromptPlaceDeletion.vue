@@ -29,6 +29,7 @@ export default {
         onConfirm() {
             this.deletePlace(this.place)
             this.active = false
+            EventBus.$emit('refreshMapPlaces')
         },
 
         onCancel() {

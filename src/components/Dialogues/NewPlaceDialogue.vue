@@ -59,7 +59,8 @@
                                 !$v.form.description.minlength ||
                                 !$v.form.description.maxlength
                             "
-                            >Description must be atleast 4 characters.
+                            >Description must be atleast 4 characters and max
+                            100 characters.
                         </span>
                     </md-field>
 
@@ -149,7 +150,7 @@ export default {
             description: {
                 required,
                 minLength: minLength(4),
-                maxLength: maxLength(50),
+                maxLength: maxLength(100),
             },
             open_hours: { timesAreValid },
         },
@@ -183,7 +184,6 @@ export default {
             this.form.coordinates.longitude = null
             this.form.coordinates.latitude = null
         },
-        savePlace() {},
         validatePlace() {
             this.$v.$touch()
             if (!this.$v.$invalid) {

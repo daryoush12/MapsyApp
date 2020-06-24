@@ -1,4 +1,2 @@
-export const timesAreValid = (times) => {
-    console.log(times);
-    return(times.from.H < times.to.H)
-}
+export const timesAreValid = (open_hours) =>
+    parseInt(open_hours.from.H) < parseInt(open_hours.to.H)
