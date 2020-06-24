@@ -43,8 +43,19 @@ export default{
             axios
         .delete(api_url+'/API/V1/places/delete?id='+place._id)
         .then((response) => {
-            console.log(response.status);
-            commitbase(response.status)
+            commitbase(response.status);
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    editPlace(commitbase, place) {
+        
+        axios
+        .put(api_url+'/API/V1/places/update', place)
+        .then((response) => {
+            commitbase(response.status);
         })
         .catch(error => {
           console.log(error)

@@ -1,50 +1,49 @@
 <template>
-  <div>
-    <md-dialog-confirm
-      :md-active.sync="active"
-      md-title="Delete place"
-      :md-content="msg"
-      md-confirm-text="Continue"
-      md-cancel-text="Cancel"
-      @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
-  </div>
+    <div>
+        <md-dialog-confirm
+            :md-active.sync="active"
+            md-title="Delete place"
+            :md-content="msg"
+            md-confirm-text="Continue"
+            md-cancel-text="Cancel"
+            @md-cancel="onCancel"
+            @md-confirm="onConfirm"
+        />
+    </div>
 </template>
 
 <script>
-import {EventBus} from '../../event-bus';
-import {mapActions} from 'vuex'
+import { EventBus } from '../../event-bus'
+import { mapActions } from 'vuex'
 
 export default {
     data() {
         return {
             active: false,
             place: null,
-            msg: null
+            msg: null,
         }
     },
-    methods: { 
-    ...mapActions('places', [
-        'deletePlace'
-    ]),
-        onConfirm(){
-            this.deletePlace(this.place);
-            this.active = false;
+    methods: {
+        ...mapActions('places', ['deletePlace']),
+        onConfirm() {
+            this.deletePlace(this.place)
+            this.active = false
         },
 
-        onCancel(){
+        onCancel() {
             this.$emit('cancel')
-            this.active = false;
-        }
+            this.active = false
+        },
     },
 
-mounted(){
-    EventBus.$on("placedelete", place => {
-console.log("deleting: "+place.title)
-    this.place = place;
-    this.active = true;
-    this.msg = "Do you want to delete "+place.title+" ?";
-  });
-}
+    mounted() {
+        EventBus.$on('placedelete', (place) => {
+            console.log('deleting: ' + place.title)
+            this.place = place
+            this.active = true
+            this.msg = 'Do you want to delete ' + place.title + ' ?'
+        })
+    },
 }
 </script>

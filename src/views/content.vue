@@ -8,15 +8,17 @@
 
         <md-snackbar :md-active.sync="deleteStatus">Place was deleted with success!</md-snackbar>
         <md-snackbar :md-active.sync="addStatus">Place was added successfully</md-snackbar>
+        <md-snackbar :md-active.sync="editStatus">Place was edited successfully</md-snackbar>
         
 </div>
 </template>
 
 <script>
 import Map from '../components/Map'
-import { mapState} from 'vuex'
+import { mapState, mapActions} from 'vuex'
 import NewPlaceDialogue from '../components/Dialogues/NewPlaceDialogue'
 import PromptPlaceDeletion from '../components/Dialogues/PromptPlaceDeletion'
+import {EventBus} from '../event-bus'
 
 
 export default {
@@ -36,7 +38,8 @@ components: {
  computed: mapState({
      places: state => state.places.all,
      deleteStatus: state => state.places.deleteStatus,
-     addStatus: state => state.places.addStatus
+     addStatus: state => state.places.addStatus,
+     editStatus: state => state.places.editStatus
  }),
 
 compute: {
@@ -56,6 +59,9 @@ updated(){
     
 },
 methods: {
+...mapActions('places', [
+'getAllPlaces'
+]),
 addplace(value){
         this.newCoords = value;
 },
@@ -66,9 +72,13 @@ cleanCoords(){
 alertShow(){
       this.showAlert = true;
 },
+},
+
+mounted(){
+EventBus.$on("refreshMapPlaces", () => {
+       this.getAllPlaces();
+  }); 
 }
-
-
 
 }
 </script>

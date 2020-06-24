@@ -5,9 +5,8 @@ import { Map, TileLayer, OsmSource, Geoloc } from 'vuelayers'
 import 'vuelayers/lib/style.css'
 import { CircleStyle } from 'vuelayers'
 import { IconStyle } from 'vuelayers'
-import Vue from 'vue';
-import VueLayers from 'vuelayers';
-
+import Vue from 'vue'
+import VueLayers from 'vuelayers'
 
 Vue.use(IconStyle)
 Vue.use(CircleStyle)
@@ -17,6 +16,4 @@ Vue.use(Geoloc)
 Vue.use(Map)
 Vue.use(VueLayers)
 
-export default {
-
-}
+export default {}

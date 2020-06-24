@@ -3,7 +3,8 @@ import places from '../../api-connectors/places'
 const state = () => ({
         all: [],
         addStatus: null,
-        deleteStatus: null
+        deleteStatus: null,
+        editStatus: null
 })
 
 const getters = {};
@@ -27,6 +28,10 @@ searchPlacesByKeyword({commit}, label){
 
  deletePlace({commit}, place) {
    places.deletePlace(status => {commit('didDeleteSucceed', status)}, place);
+ },
+
+ editPlace({commit}, place){
+    places.editPlace(status => {commit('didEditSucceed', status)}, place);
  }
 
 }
@@ -61,6 +66,16 @@ didDeleteSucceed(state, status){
          break;
       default:
          state.deleteStatus = false;
+   }
+},
+
+didEditSucceed(state, status){
+   switch(status){
+      case 200:
+         state.editStatus = true
+         break;
+      default:
+         state.editStatus = false;
    }
 }
 }

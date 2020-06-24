@@ -19,6 +19,7 @@
 import Content from './views/content'
 import Toolbar from './components/Toolbar'
 import drawercontent from './views/drawercontent'
+
 export default {
   name: 'App',
   components: {

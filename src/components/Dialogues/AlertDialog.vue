@@ -1,28 +1,27 @@
 <template>
-        <md-dialog-alert
-      :md-active.sync="show"
-      :md-content=message
-      md-confirm-text="OK" 
-      v-on:md-confirm="hideAlert"/>
+    <md-dialog-alert
+        :md-active.sync="show"
+        :md-content="message"
+        md-confirm-text="OK"
+        v-on:md-confirm="hideAlert"
+    />
 </template>
 <script>
 export default {
     props: {
-        message: String
+        message: String,
     },
-    data(){
-    return {
-        show: true
+    data() {
+        return {
+            show: true,
         }
     },
 
     methods: {
-        hideAlert(){
-            this.show = false;
-        }
-    }
+        hideAlert() {
+            this.show = false
+        },
+    },
 }
 </script>
-<style lang="sass">
-
-</style>
+<style lang="sass"></style>

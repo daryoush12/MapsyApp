@@ -1,22 +1,20 @@
 const state = () => ({
-        isDrawing: false,
+    isDrawing: false,
 })
 
-const getters = {};
+const getters = {}
 
-const actions =  {
- setDrawingState({commit}, value){
-   commit('setDrawing', value);
- }
+const actions = {
+    setDrawingState({ commit }, value) {
+        commit('setDrawing', value)
+    },
 }
 
-const mutations =  {
- setDrawing(state, value){
-    console.log(value);
-    state.isDrawing = value;
- }
-
-
+const mutations = {
+    setDrawing(state, value) {
+        console.log(value)
+        state.isDrawing = value
+    },
 }
 
 export default {
@@ -24,5 +22,5 @@ export default {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

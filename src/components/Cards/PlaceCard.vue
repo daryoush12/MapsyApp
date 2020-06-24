@@ -1,6 +1,10 @@
 <template>
-        <md-card v-if="place != null">
-          <md-card-header>
+    <md-card v-if="place != null">
+      <div v-if="editModeOn && editForm != null">
+        <PlaceEdit :form="editForm">
+      </div>
+      <div v-else>
+        <md-card-header>
             <div class = "speech-triangle"></div>
         <md-card-header-text class = "head-text">
           <div class="md-title">{{place.title}}</div>
@@ -22,23 +26,34 @@
           {{place.description}}      
         </md-card-content>
          <md-card-actions>
+          <md-button class="md-icon-button" @click="startEdit">
+            <md-icon>edit</md-icon>
+          </md-button>
          <md-button class="md-icon-button" @click="invokeDelete">
             <md-icon>delete</md-icon>
           </md-button>
-          <md-button class="md-icon-button" @click="invokeDelete">
-            <md-icon>edit</md-icon>
-          </md-button>
       </md-card-actions>
+      </div>
     </md-card>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+import {EventBus} from '../../event-bus'
+import PlaceEdit from '../../EditForms/PlaceEdit'
 
 export default {
 
+components: {
+PlaceEdit
+},
 data(){
   return {
-      editModeOn: false
+      editModeOn: false,
+      editForm: null,
+      form:{
+        title: null
+      }
   }
 },
 props: {
@@ -69,9 +84,14 @@ computed: {
 },
 
 compute: {
-
+  computeNumToString(value){
+    return value.toString();
+  }
 },
-methods: {
+  methods: {...mapActions('places', [
+    'editPlace'
+  ]),
+
     invokeClose(){
         this.$emit("close");
     },
@@ -80,14 +100,35 @@ methods: {
         this.$emit("delete");
     },
 
-       dateHour(timestamp){
+    dateHour(timestamp){
           var date_object = new Date();
           date_object.setHours(timestamp);
           date_object.setMinutes(0);
           return date_object;
-    }
+    },
 
- 
+    startEdit(){
+      this.editModeOn = true;
+      this.editForm = this.place;
+      //Mutate object to support vue timepicker. 
+      //Yes it is ugly have mercy reader.
+      this.editForm.open_hours.from = null;
+      this.editForm.open_hours.to = null;
+    },
+
+    stopEdit(place){
+
+      var from = this.editForm.open_hours.from.H;
+      var to = this.editForm.open_hours.to.H;
+
+      this.editForm.open_hours.from = from;
+      this.editForm.open_hours.to = to;
+
+      this.editPlace(this.editForm);
+
+      EventBus.$emit("refreshMapPlaces");
+      this.editModeOn = false;
+    },
 }
 }
 </script>
@@ -103,5 +144,8 @@ methods: {
 
 .opening-hours
   padding-bottom: 20px
+.input-title
+  width: 160px
+
   
 </style>
