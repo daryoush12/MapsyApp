@@ -23,6 +23,12 @@ const actions = {
         }, searchvalue)
     },
 
+    searchPlacesByDescription({ commit }, searchvalue) {
+        places.searchPlacesByDescription((places) => {
+            commit('setPlaces', places)
+        }, searchvalue)
+    },
+
     searchPlacesByKeyword({ commit }, label) {
         places.searchPlacesByKeyword((places) => {
             commit('setPlaces', places)
