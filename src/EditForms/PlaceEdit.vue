@@ -8,6 +8,7 @@
                         <label>Title</label>
                         <md-input
                             class="input-title"
+                            id="title"
                             v-model="form.title"
                         ></md-input>
                         <span class="md-error" v-if="!$v.form.title.required"
@@ -40,6 +41,7 @@
                 <vue-timepicker
                     :placeholder="form.open_hours.from.H.toString()"
                     class="time-pick"
+                    id="hourfrom"
                     v-model="form.open_hours.from"
                     format="H"
                 ></vue-timepicker
@@ -49,6 +51,7 @@
                     class="time-pick"
                     v-model="form.open_hours.to"
                     format="H"
+                    id="hourto"
                 ></vue-timepicker>
                 <span class="md-error" v-if="!$v.form.open_hours.timesAreValid"
                     >Not a valid opening hour</span
@@ -56,8 +59,9 @@
             </md-field>
 
             <md-field :class="getValidationClass('description')">
-                <label>Title</label>
+                <label>Description</label>
                 <md-textarea
+                    id="description"
                     v-model="form.description"
                     md-autogrow
                 ></md-textarea>
