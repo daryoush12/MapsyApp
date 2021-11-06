@@ -68,12 +68,14 @@
                         Opening Hours: <br />
                         <vue-timepicker
                             format="H"
+                            id="hourfrom"
                             v-model="form.open_hours.from"
                         ></vue-timepicker>
                         -
                         <vue-timepicker
                             v-model="form.open_hours.to"
                             format="H"
+                            id="hourto"
                         ></vue-timepicker>
                         <span
                             class="md-error"
