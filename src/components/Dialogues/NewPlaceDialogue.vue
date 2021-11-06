@@ -64,26 +64,6 @@
                         </span>
                     </md-field>
 
-                    <md-field :class="getValidationClass('open_hours')">
-                        Opening Hours: <br />
-                        <vue-timepicker
-                            format="H"
-                            id="hourfrom"
-                            v-model="form.open_hours.from"
-                        ></vue-timepicker>
-                        -
-                        <vue-timepicker
-                            v-model="form.open_hours.to"
-                            format="H"
-                            id="hourto"
-                        ></vue-timepicker>
-                        <span
-                            class="md-error"
-                            v-if="!$v.form.open_hours.timesAreValid"
-                            >Not a valid opening hour</span
-                        >
-                    </md-field>
-
                     <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
                     <md-field>
@@ -131,10 +111,10 @@ export default {
             },
             open_hours: {
                 from: {
-                    H: null,
+                    H: 1,
                 },
                 to: {
-                    H: null,
+                    H: 5,
                 },
             },
         },
